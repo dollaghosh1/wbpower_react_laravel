@@ -24,11 +24,11 @@ function App() {
       <BrowserRouter>
         <Routes>
           {/* Wrap all routes in AdminLayout */}
-          <Route path="/" element={<AdminLayout />}>
             {/* Public route */}
             <Route path="login" element={<Login />} />
 
             {/* Protected routes */}
+            <Route path="/" element={<PrivateRoute><AdminLayout /></PrivateRoute>}>
             <Route path="dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
             <Route path="post" element={<PrivateRoute><Post /></PrivateRoute>} />
             <Route path="postform/:id?" element={<PrivateRoute><PostForm /></PrivateRoute>} />

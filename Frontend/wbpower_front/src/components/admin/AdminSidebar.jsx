@@ -2,6 +2,8 @@ import { useState } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import api from '../../api/api'
+import { logout } from '../../redux/authSlice';
+import { useDispatch } from 'react-redux';
 import {
   MdDashboard,
   MdSettings,
@@ -10,13 +12,14 @@ import {
   MdExpandLess,
   MdLogout,
 } from "react-icons/md";
+  
 
 const Sidebar = () => {
   const [openMenu, setOpenMenu] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
-
-  const handleLogout = async () => {
+  const dispatch = useDispatch();
+  /*const handleLogout = async () => {
     const token = localStorage.getItem("token");
     try {
       await api.post("/logout", {}, { headers: { Authorization: `Bearer ${token}` } });
@@ -27,6 +30,11 @@ const Sidebar = () => {
       localStorage.removeItem("user");
       navigate("/login", { replace: true });
     }
+  };*/
+
+  const handleLogout = () => {
+    dispatch(logout());
+    navigate('/login'); // redirect after logout
   };
 
   const menuItems = [

@@ -1,8 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useNavigate } from "react-router-dom";
+import { logout } from '../../../redux/authSlice';
+import { useDispatch } from 'react-redux';
 
 const UserProfile = () => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const toggleDropdown = () => setOpen(!open);
 
@@ -18,8 +23,8 @@ const UserProfile = () => {
   }, []);
 
   const handleLogout = () => {
-    console.log('Logging out...');
-    // Add your logout logic here
+    dispatch(logout());
+    navigate('/login'); // redirect after logout
   };
 
   return (

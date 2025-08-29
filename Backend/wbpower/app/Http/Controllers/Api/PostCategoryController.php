@@ -58,7 +58,7 @@ class PostCategoryController extends Controller
                         'message' => 'Unauthorized'
                     ], 401);
                 }
-            $AllPostCategory = PostCategory::all();
+            $AllPostCategory = PostCategory::orderBy('id', 'desc')->get();
             return response()->json([
                'success'=>true,
                 'data'=>$AllPostCategory,
@@ -72,6 +72,40 @@ class PostCategoryController extends Controller
         }
         
      }
+     public function PostCategoryDetails(Request $request, $post_cat_id)
+    {
+        //return $post_id;
+        try {
+            $user = Auth::user();
+
+            if (!$user) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Unauthorized'
+                ], 401);
+            }
+
+            $Post_category_details = PostCategory::find($post_cat_id);
+
+            if (!$Post_category_details) {
+                return response()->json(['message' => 'Post Caegory not found'], 404);
+            }
+
+
+            return response()->json([
+                'success' => true,
+                'data' => $Post_category_details,
+                'message' => 'Post Category Details successfully!'
+            ]);
+           
+
+        } catch (ValidationException $e) {
+            return response()->json([
+                'success' => false,
+                'errors'  => $e->errors()
+            ], 422);
+        }
+    }
      public function updatePostCategory(Request $request, $postcat_id)
     {
         try

@@ -79,7 +79,7 @@ export default function PostList() {
       {/* Top Toolbar */}
       <div className="mb-6 flex flex-col md:flex-row md:items-center md:justify-between gap-4">
         <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2 font-poppins text-2xl">
-          Posts
+          All Posts
         </h1>
 
         <div className="flex gap-3 items-center">
@@ -103,7 +103,7 @@ export default function PostList() {
             onClick={AddPost}
             className="flex items-center gap-2 px-4 py-2 p-head text-white font-medium rounded-lg shadow hover:bg-blue-700 transition"
           >
-            <FiPlus /> Add Post
+            <FiPlus /> Add
           </button>
         </div>
       </div>

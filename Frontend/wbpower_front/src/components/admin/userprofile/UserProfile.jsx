@@ -37,12 +37,12 @@ const UserProfile = () => {
       />
       {open && (
         <div className="origin-top-right absolute right-0 mt-2 w-28 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50">
-          <div className="py-1">
+          <div className="">
             <button
               onClick={handleLogout}
-              className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+              className="block w-full text-left py-2 px-2 text-sm text-gray-700 text-logout"
             >
-              Logout
+              Sign out &nbsp; <i class="fas fa-sign-out-alt"></i>
             </button>
           </div>
         </div>

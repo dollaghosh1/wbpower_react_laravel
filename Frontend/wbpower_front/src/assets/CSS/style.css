@@ -30,7 +30,7 @@ a {
     border-radius: calc(infinity * 1px) !important;
 }
 .font-poppins{
-        font-size: 1.8rem;
+    font-size: 1.4rem;
     font-weight: 400;
     margin-bottom: 0px;
 }
@@ -46,4 +46,12 @@ a {
 }
 .text-power{
     font-size: 1.3rem;
+}
+.text-logout {
+    font-size: 14px;
+    text-align: center;
+    font-weight: 500;
+}
+.text-logout:hover {
+    color: rgb(252, 82, 82);
 }

@@ -1,7 +1,6 @@
 import { useState } from "react";
-import { Link, useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation, matchPath } from "react-router-dom";
 import '@fortawesome/fontawesome-free/css/all.min.css';
-import api from '../../api/api'
 import { logout } from '../../redux/authSlice';
 import { useDispatch } from 'react-redux';
 import {
@@ -12,25 +11,12 @@ import {
   MdExpandLess,
   MdLogout,
 } from "react-icons/md";
-  
 
 const Sidebar = () => {
   const [openMenu, setOpenMenu] = useState(null);
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
-  /*const handleLogout = async () => {
-    const token = localStorage.getItem("token");
-    try {
-      await api.post("/logout", {}, { headers: { Authorization: `Bearer ${token}` } });
-    } catch (err) {
-      console.error("Logout API error:", err);
-    } finally {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      navigate("/login", { replace: true });
-    }
-  };*/
 
   const handleLogout = () => {
     dispatch(logout());
@@ -59,14 +45,17 @@ const Sidebar = () => {
     { label: "Sign out", icon: <MdLogout />, isLogout: true },
   ];
 
-  const isActive = (path) => location.pathname.startsWith(path);
+  // ✅ Updated isActive using matchPath for exact matching
+  const isActive = (path) => {
+    return !!matchPath({ path, end: true }, location.pathname);
+  };
 
   return (
     <aside className="fixed top-0 left-0 w-[16%] h-screen flex flex-col bg-gradient-to-b from-blue-50 to-gray-50 border-r border-gray-200 shadow-md">
-      
+
       {/* Header / Logo Section */}
-      <div className=" p-head p-4 border-b border-gray-200 shadow-sm">
-        <h4 className=" text-power font-semibold text-white flex items-center mb-0 justify-center gap-2">
+      <div className="p-head p-4 border-b border-gray-200 shadow-sm">
+        <h4 className="text-power font-semibold text-white flex items-center mb-0 justify-center gap-2">
           <i className="fa-solid fa-bolt text-white"></i> Power Dept
         </h4>
       </div>
@@ -104,7 +93,7 @@ const Sidebar = () => {
                         to={sub.to}
                         className={`block py-1.5 px-2 rounded-lg text-sm transition ${
                           isActive(sub.to)
-                            ? "bg-blue-100 text-blue-700 font-semibold"
+                            ? "bg-blue-100 font-semibold"
                             : "text-gray-600 hover:bg-gray-100"
                         }`}
                       >
@@ -137,7 +126,6 @@ const Sidebar = () => {
           onClick={handleLogout}
           className="w-full flex items-center gap-3 text-gray-600 hover:text-red-500 transition-all"
         >
-          {/* Avatar */}
           <div className="w-9 h-9 rounded-full bg-gray-300 flex items-center justify-center text-gray-700 font-bold">
             U
           </div>

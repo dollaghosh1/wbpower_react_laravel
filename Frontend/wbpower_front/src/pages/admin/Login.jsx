@@ -1,13 +1,15 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
-import axios from "axios";
 import api from "../../api/api"
+import { useDispatch } from 'react-redux';
+import { login } from '../../redux/authSlice';
 
 export default function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -20,8 +22,11 @@ export default function Login() {
         password,
         });
       if (response.data.access_token) {
-        localStorage.setItem("token", response.data.access_token); // save token
-        localStorage.setItem("user", JSON.stringify(response.data.user)); // optional: store user info
+         const token = response.data.access_token;
+         localStorage.setItem("token", token);
+       // localStorage.setItem("token", response.data.access_token); // save token
+       // localStorage.setItem("user", JSON.stringify(response.data.user)); // optional: store user info
+         dispatch(login({ token }));
         navigate("/dashboard"); // redirect to admin dashboard
       } else {
         alert("Invalid login response!");

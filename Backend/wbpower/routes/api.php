@@ -23,6 +23,7 @@ Route::middleware('auth:api')->delete('deleteuserdetails', [UserController::clas
 // Post Category
 Route::middleware('auth:api')->post('addpostcategory', [PostCategoryController::class, 'addPostCategory']);
 Route::middleware('auth:api')->get('allpostcategory', [PostCategoryController::class, 'allPostCategory']);
+Route::middleware('auth:api')->get('postcategorydetails/{post_id}', [PostCategoryController::class, 'PostCategoryDetails']);
 Route::middleware('auth:api')->put('updatepostcategory/{postcat_id}', [PostCategoryController::class, 'updatePostCategory']);
 Route::middleware('auth:api')->delete('deletepostcategory/{postcat_id}', [PostCategoryController::class, 'deletePostCategory']);
 

@@ -223,7 +223,7 @@ export default function PostForm() {
             : "bg-indigo-600 hover:bg-indigo-700"
         }`}
       >
-        {isSubmitting ? (id ? "Updating..." : "Submitting...") : id ? "Update Post" : "Create Post"}
+        {isSubmitting ? (id ? "Updating..." : "Submitting...") : id ? "Update" : "Create"}
       </button>
     </form>
   );

@@ -37,9 +37,8 @@ const Sidebar = () => {
       label: "Settings",
       icon: <MdSettings />,
       children: [
-        { label: "Profile", to: "/settings/profile" },
-        { label: "Account", to: "/settings/account" },
-        { label: "Security", to: "/settings/security" },
+        { label: "Profile", to: "/user-profile" },
+    
       ],
     },
     { label: "Sign out", icon: <MdLogout />, isLogout: true },

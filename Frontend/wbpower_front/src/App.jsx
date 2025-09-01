@@ -9,6 +9,7 @@ import PostCategoryForm from "./pages/admin/PostCategoryFormPage";
 import Login from "./pages/admin/Login";
 import "./assets/css/style.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
+import UserProfileFormPage from "./pages/admin/UserProfileFormPage";
 
 
 const Mycontext = createContext();
@@ -42,7 +43,7 @@ function App() {
             <Route path="postform/:id?" element={<PrivateRoute><PostForm /></PrivateRoute>} />
             <Route path="post-category" element={<PrivateRoute><PostCategory /></PrivateRoute>} />
              <Route path="post-category-form/:id?" element={<PrivateRoute><PostCategoryForm /></PrivateRoute>} />
-
+             <Route path="user-profile" element={<PrivateRoute><UserProfileFormPage /></PrivateRoute>} />
             {/* Redirect unknown routes */}
             <Route
               path="*"

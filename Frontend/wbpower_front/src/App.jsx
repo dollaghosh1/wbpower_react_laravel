@@ -1,5 +1,8 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { createContext } from "react";
+import { createContext, useEffect } from "react";
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUser } from './redux/authSlice';
+
 import AdminLayout from "./components/admin/AdminLayout";
 import { Dashboard } from "./pages/admin/Dashboard";
 import Post from "./pages/admin/PostListPage";
@@ -7,51 +10,63 @@ import PostForm from "./pages/admin/PostFormPage";
 import PostCategory from "./pages/admin/PostCategoryListPage";
 import PostCategoryForm from "./pages/admin/PostCategoryFormPage";
 import Login from "./pages/admin/Login";
-import "./assets/css/style.css";
-import '@fortawesome/fontawesome-free/css/all.min.css';
 import UserProfileFormPage from "./pages/admin/UserProfileFormPage";
 
+import "./assets/css/style.css";
+import '@fortawesome/fontawesome-free/css/all.min.css';
 
 const Mycontext = createContext();
 
-const isAuthenticated = () => localStorage.getItem("token") !== null;
+// ✅ Renamed to avoid conflict with Redux state
+const checkAuthToken = () => localStorage.getItem("token") !== null;
 
+// ✅ Private route guard
 const PrivateRoute = ({ children }) =>
-  isAuthenticated() ? children : <Navigate to="/login" replace />;
+  checkAuthToken() ? children : <Navigate to="/login" replace />;
 
-const PublicRoute = ({ children }) => {
-  const token = localStorage.getItem("token");
-  return !token ? children : <Navigate to="/dashboard" replace />;
-};
+// ✅ Public route guard
+const PublicRoute = ({ children }) =>
+  !checkAuthToken() ? children : <Navigate to="/dashboard" replace />;
 
 function App() {
-  const values = {};
+  const dispatch = useDispatch();
+  const { isAuthenticated, user } = useSelector((state) => state.auth);
+
+  // ✅ Fetch user if logged in and user data is missing
+  useEffect(() => {
+    if (isAuthenticated && !user) {
+      dispatch(fetchUser());
+    }
+  }, [dispatch, isAuthenticated, user]);
+
+  const values = {}; // For context if needed
 
   return (
     <Mycontext.Provider value={values}>
       <BrowserRouter>
         <Routes>
-          {/* Wrap all routes in AdminLayout */}
-            {/* Public route */}
-            {/* <Route path="login" element={<Login />} /> */}
-            <Route path="login" element={<PublicRoute><Login /></PublicRoute>} />
+          {/* Public route */}
+          <Route path="login" element={<PublicRoute><Login /></PublicRoute>} />
 
-            {/* Protected routes */}
-            <Route path="/" element={<PrivateRoute><AdminLayout /></PrivateRoute>}>
-            <Route path="dashboard" element={<PrivateRoute><Dashboard /></PrivateRoute>} />
-            <Route path="post" element={<PrivateRoute><Post /></PrivateRoute>} />
-            <Route path="postform/:id?" element={<PrivateRoute><PostForm /></PrivateRoute>} />
-            <Route path="post-category" element={<PrivateRoute><PostCategory /></PrivateRoute>} />
-             <Route path="post-category-form/:id?" element={<PrivateRoute><PostCategoryForm /></PrivateRoute>} />
-             <Route path="user-profile" element={<PrivateRoute><UserProfileFormPage /></PrivateRoute>} />
-            {/* Redirect unknown routes */}
-            <Route
-              path="*"
-              element={
-                isAuthenticated() ? <Navigate to="/dashboard" replace /> : <Navigate to="/login" replace />
-              }
-            />
+          {/* Protected route wrapper */}
+          <Route path="/" element={<PrivateRoute><AdminLayout /></PrivateRoute>}>
+            <Route path="dashboard" element={<Dashboard />} />
+            <Route path="post" element={<Post />} />
+            <Route path="postform/:id?" element={<PostForm />} />
+            <Route path="post-category" element={<PostCategory />} />
+            <Route path="post-category-form/:id?" element={<PostCategoryForm />} />
+            <Route path="user-profile" element={<UserProfileFormPage />} />
           </Route>
+
+          {/* Redirect unknown routes */}
+          <Route
+            path="*"
+            element={
+              checkAuthToken()
+                ? <Navigate to="/dashboard" replace />
+                : <Navigate to="/login" replace />
+            }
+          />
         </Routes>
       </BrowserRouter>
     </Mycontext.Provider>

@@ -55,6 +55,7 @@ class UserController extends Controller
         $validatedData = $request->validate([
             'name'  => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+            'phone' => 'nullable|string|max:20',
         ]);
     //return $validatedData;
         // Update user

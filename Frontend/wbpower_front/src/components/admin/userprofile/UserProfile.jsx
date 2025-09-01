@@ -2,12 +2,14 @@ import React, { useState, useEffect, useRef } from 'react';
 import { useNavigate } from "react-router-dom";
 import { logout } from '../../../redux/authSlice';
 import { useDispatch } from 'react-redux';
+import defaultAvatar from '../../../assets/images/admin/avatar.jpg';
 
 const UserProfile = () => {
   const [open, setOpen] = useState(false);
   const dropdownRef = useRef(null);
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [preview, setPreview] = useState(defaultAvatar);
 
   const toggleDropdown = () => setOpen(!open);
 
@@ -30,7 +32,7 @@ const UserProfile = () => {
   return (
     <div className="relative inline-block text-left" ref={dropdownRef}>
       <img
-        src="https://i.pravatar.cc/40"
+        src={preview}
         alt="User Avatar"
         className="w-10 h-10 rounded-full cursor-pointer"
         onClick={toggleDropdown}

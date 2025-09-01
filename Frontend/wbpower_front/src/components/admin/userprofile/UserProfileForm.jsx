@@ -9,7 +9,7 @@ import api from "../../../api/api"; // axios instance
 const schema = Yup.object().shape({
   name: Yup.string().required('Full Name is required'),
   email: Yup.string().email('Invalid email').required('Email is required'),
-  //phone: Yup.string().matches(/^\+?\d{10,14}$/, 'Invalid phone number'),
+  phone: Yup.string().matches(/^\+?\d{10,14}$/, 'Invalid phone number'),
 });
 
 const UserProfileForm = () => {
@@ -49,7 +49,7 @@ const [preview, setPreview] = useState(defaultAvatar);
         reset({
           name: data.data.name,
           email: data.data.email,
-         // phone: data.phone,
+          phone: data.data.phone,
         });
 
         // if (data.avatarUrl) {
@@ -81,7 +81,7 @@ const [preview, setPreview] = useState(defaultAvatar);
       console.log(formDataToSend);
       formDataToSend.append('name', formData.name);
       formDataToSend.append('email', formData.email);
-      //formDataToSend.append('phone', formData.phone);
+      formDataToSend.append('phone', formData.phone);
       // if (formData.avatar) {
       //   formDataToSend.append('avatar', formData.avatar);
       // }
@@ -138,7 +138,6 @@ const [preview, setPreview] = useState(defaultAvatar);
             <input
               type="tel"
               {...register('phone')}
-              //placeholder="+1234567890"
               className="w-full border border-gray-300 rounded px-4 py-2"
             />
             {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message}</p>}

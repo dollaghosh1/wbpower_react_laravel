@@ -1,8 +1,11 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Link, useNavigate, useLocation, matchPath } from "react-router-dom";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { logout } from '../../redux/authSlice';
 import { useDispatch } from 'react-redux';
+import api from "../../api/api";
+import { selectAuthUser } from '../../redux/authSlice';
+
 import {
   MdDashboard,
   MdSettings,
@@ -17,11 +20,29 @@ const Sidebar = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const dispatch = useDispatch();
+  const [user, setUser] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  //const user_fname = useSelector(selectAuthUser);
 
   const handleLogout = () => {
     dispatch(logout());
     navigate('/login'); // redirect after logout
   };
+   useEffect(() => {
+    // Replace this URL with your actual API endpoint
+    api.get('/userdetails')
+      .then((response) => {
+        setUser(response.data.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        setError('Failed to fetch user');
+        setLoading(false);
+      });
+  }, []);
+  //  
+  const firstLetter = user?.name?.charAt(0).toUpperCase() || '?';
 
   const menuItems = [
     { label: "Dashboard", icon: <MdDashboard />, to: "/dashboard" },
@@ -126,7 +147,7 @@ const Sidebar = () => {
           className="w-full flex items-center gap-3 text-gray-600 hover:text-red-500 transition-all"
         >
           <div className="w-9 h-9 rounded-full bg-gray-300 flex items-center justify-center text-gray-700 font-bold">
-            U
+            {firstLetter || 'U'}
           </div>
           <span className="text-base font-medium tracking-wide">Sign out</span>
         </button>

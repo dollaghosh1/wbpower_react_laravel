@@ -17,7 +17,7 @@ Route::post('login', [AuthController::class, 'login']);
 Route::middleware('auth:api')->post('logout', [AuthController::class, 'logout']);
 Route::get('alluserlist', [UserController::class, 'allUserList']);
 Route::middleware('auth:api')->get('userdetails', [UserController::class, 'userDetails']);
-Route::middleware('auth:api')->put('updateuserdetails', [UserController::class, 'updateUserDetails']);
+Route::middleware('auth:api')->post('updateuserdetails', [UserController::class, 'updateUserDetails']);
 Route::middleware('auth:api')->delete('deleteuserdetails', [UserController::class, 'deleteUserDetails']);
 
 // Post Category

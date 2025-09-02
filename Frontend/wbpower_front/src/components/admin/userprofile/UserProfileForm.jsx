@@ -44,17 +44,24 @@ const [preview, setPreview] = useState(defaultAvatar);
 
    useEffect(() => {
     const fetchUser = async () => {
+      
       try {
           const { data } = await api.get(`/userdetails`);
+         
         reset({
           name: data.data.name,
           email: data.data.email,
           phone: data.data.phone,
+          user_address: data.data.additional_detail.user_address,
+          //user_image: data.data.additional_detail.user_image,
+          
         });
+       const user_image = data.data.additional_detail.user_image;
+       
+        if (user_image) {
+           setPreview(`${import.meta.env.VITE_IMG_URL}/${user_image}`);
 
-        // if (data.avatarUrl) {
-        //   setPreview(data.avatarUrl);
-        // }
+        }
         setLoading(false);
       } catch (err) {
         console.error('Error fetching user:', err);
@@ -66,13 +73,13 @@ const [preview, setPreview] = useState(defaultAvatar);
   },[reset]);
 
   // ✅ Avatar change
-  // const handleAvatarChange = (e) => {
-  //   const file = e.target.files[0];
-  //   if (file) {
-  //     setPreview(URL.createObjectURL(file));
-  //     setValue('avatar', file);
-  //   }
-  // };
+  const handleAvatarChange = (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      setPreview(URL.createObjectURL(file));
+      setValue('user_image', file);
+    }
+  };
 
   // ✅ Submit updated user data
   const onSubmit = async (formData) => {
@@ -82,20 +89,22 @@ const [preview, setPreview] = useState(defaultAvatar);
       formDataToSend.append('name', formData.name);
       formDataToSend.append('email', formData.email);
       formDataToSend.append('phone', formData.phone);
-      // if (formData.avatar) {
-      //   formDataToSend.append('avatar', formData.avatar);
-      // }
+      formDataToSend.append('user_address', formData.user_address);
 
-      await api.put(`/updateuserdetails`, formDataToSend
-      //   {
-      //   headers: { 'Content-Type': 'multipart/form-data' },
-      // }
+      if (formData.user_image) {
+        formDataToSend.append('user_image', formData.user_image);
+      }
+
+      await api.post(`/updateuserdetails`, formDataToSend,
+        {
+        headers: { 'Content-Type': 'multipart/form-data' },
+      }
       );
         setSuccessMessage('Profile updated successfully!');
-      setTimeout(() => setSuccessMessage(''), 3000);
+      setTimeout(() => setSuccessMessage(''), 1000);
     } catch (error) {
        setErrorMessage('Update failed');
-      setTimeout(() => setErrorMessage(''), 3000);
+       setTimeout(() => setErrorMessage(''), 1000);
      // console.error('Update failed:', error);
      // alert('Update failed!');
     }
@@ -142,6 +151,16 @@ const [preview, setPreview] = useState(defaultAvatar);
             />
             {errors.phone && <p className="text-red-500 text-sm">{errors.phone.message}</p>}
           </div>
+           <div>
+            <label className="block font-medium mb-1">Address:</label>
+            <textarea
+              id="user_address"
+              {...register("user_address", { required: "User Address is required" })}
+              placeholder="Enter User Addressz"
+              className="w-full border border-gray-300 rounded px-4 py-2"
+            />
+            {errors.user_address && <p className="text-red-500 text-sm">{errors.user_address.message}</p>}
+          </div>
         </div>
 
         {/* RIGHT: Avatar Upload + Preview */}
@@ -155,10 +174,10 @@ const [preview, setPreview] = useState(defaultAvatar);
             <input
               type="file"
               accept="image/*"
-             // onChange={handleAvatarChange}
+              onChange={handleAvatarChange}
               className="block text-sm text-gray-600"
             />
-            {errors.avatar && <p className="text-red-500 text-sm">{errors.avatar.message}</p>}
+            {errors.user_image && <p className="text-red-500 text-sm">{errors.user_image.message}</p>}
           </div>
         </div>
       </div>

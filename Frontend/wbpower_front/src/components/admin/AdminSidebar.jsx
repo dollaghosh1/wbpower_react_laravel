@@ -2,7 +2,7 @@ import { useState,useEffect } from "react";
 import { Link, useNavigate, useLocation, matchPath } from "react-router-dom";
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import { logout } from '../../redux/authSlice';
-import { useDispatch } from 'react-redux';
+import { useDispatch,useSelector } from 'react-redux';
 import api from "../../api/api";
 import { selectAuthUser } from '../../redux/authSlice';
 
@@ -23,7 +23,7 @@ const Sidebar = () => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  //const user_fname = useSelector(selectAuthUser);
+  const user_fname = useSelector(selectAuthUser);
 
   const handleLogout = () => {
     dispatch(logout());
@@ -42,7 +42,7 @@ const Sidebar = () => {
       });
   }, []);
   //  
-  const firstLetter = user?.name?.charAt(0).toUpperCase() || '?';
+  const firstLetter = user_fname?.name?.charAt(0).toUpperCase() || '?';
 
   const menuItems = [
     { label: "Dashboard", icon: <MdDashboard />, to: "/dashboard" },

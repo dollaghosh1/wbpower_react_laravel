@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import api from "../../../api/api"; // axios instance
 import { useNavigate, useParams } from "react-router-dom";
 
+
 export default function PostCategoryForm() {
   const [categories, setCategories] = useState([]);
   //const [loadingCategories, setLoadingCategories] = useState(true);
@@ -11,6 +12,7 @@ export default function PostCategoryForm() {
   const [slug, setSlug] = useState('');
   const navigate = useNavigate();
   const { id } = useParams(); // Post ID from route param, if any
+
 
   const {
     register,

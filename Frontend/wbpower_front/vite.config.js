@@ -4,5 +4,15 @@ import tailwindcss from '@tailwindcss/vite'
 
 // https://vite.dev/config/
 export default defineConfig({
-  plugins: [react(),  tailwindcss(),],
+  plugins: [react(),  tailwindcss()],
+  optimizeDeps: {
+    include: ['@ckeditor/ckeditor5-react', '@ckeditor/ckeditor5-build-classic']
+  },
+   build: {
+    rollupOptions: {
+      output: {
+        assetFileNames: '[name].[ext]'
+      }
+    }
+  }
 })

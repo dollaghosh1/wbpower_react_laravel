@@ -54,6 +54,7 @@ const Sidebar = () => {
         { label: "Post Category", to: "/post-category" },
       ],
     },
+    {  label: "Menu", icon: <MdDashboard />, to: "/menu" },
     {
       label: "Settings",
       icon: <MdSettings />,

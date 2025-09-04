@@ -2,6 +2,8 @@ import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import api from "../../../api/api"; // axios instance
 import { useNavigate, useParams } from "react-router-dom";
+import { CKEditor } from '@ckeditor/ckeditor5-react';
+import ClassicEditor from '@ckeditor/ckeditor5-build-classic';
 
 export default function PostForm() {
   const [categories, setCategories] = useState([]);
@@ -10,16 +12,22 @@ export default function PostForm() {
   const [preview, setPreview] = useState(null);
   const navigate = useNavigate();
   const { id } = useParams(); // Post ID from route param, if any
+  const [content, setContent] = useState('<p>Write something...</p>');
 
   const {
     register,
     handleSubmit,
     reset,
+    watch,
     formState: { errors, isSubmitting },
     setValue,
-  } = useForm();
-
+  } = useForm({
+    defaultValues: {
+      content: '<p>Write something...</p>'
+    }
+     });
   // Fetch categories on mount
+
   useEffect(() => {
     
     const fetchCategories = async () => {
@@ -68,7 +76,12 @@ export default function PostForm() {
 
     fetchPost();
   }, [id, setValue]);
+  useEffect(() => {
+    register('content', { required: "Content is required" });
+  }, [register]);
 
+  // Optional: watch content if you want
+  const contentValue = watch('content');
   const onSubmit = async (data) => {
     try {
       const formData = new FormData();
@@ -141,7 +154,7 @@ export default function PostForm() {
         <label htmlFor="content" className="block mb-1 font-medium text-gray-700">
           Content
         </label>
-        <textarea
+        {/* <textarea
           id="content"
           {...register("content", { required: "Content is required" })}
           placeholder="Enter post content"
@@ -149,7 +162,15 @@ export default function PostForm() {
           className={`w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-y ${
             errors.content ? "border-red-500" : "border-gray-300"
           }`}
-        />
+        /> */}
+        <CKEditor
+        editor={ClassicEditor}
+        data={contentValue}
+        onChange={(event, editor) => {
+          const data = editor.getData();
+          setValue('content', data, { shouldValidate: true }); // update RHF form state & validate
+        }}
+      />
         {errors.content && (
           <p className="mt-1 text-sm text-red-600">{errors.content.message}</p>
         )}

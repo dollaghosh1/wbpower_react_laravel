@@ -11,6 +11,7 @@ import PostCategory from "./pages/admin/PostCategoryListPage";
 import PostCategoryForm from "./pages/admin/PostCategoryFormPage";
 import Login from "./pages/admin/Login";
 import UserProfileFormPage from "./pages/admin/UserProfileFormPage";
+import MenuFormPage from "./pages/admin/MenuFormPage";
 
 import "./assets/css/style.css";
 import '@fortawesome/fontawesome-free/css/all.min.css';
@@ -56,6 +57,7 @@ function App() {
             <Route path="post-category" element={<PostCategory />} />
             <Route path="post-category-form/:id?" element={<PostCategoryForm />} />
             <Route path="user-profile" element={<UserProfileFormPage />} />
+             <Route path="menu" element={<MenuFormPage />} />
           </Route>
 
           {/* Redirect unknown routes */}
